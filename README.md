@@ -1,2 +1,2 @@
 # programacion3-web-tup-2026
-v6
+v7
