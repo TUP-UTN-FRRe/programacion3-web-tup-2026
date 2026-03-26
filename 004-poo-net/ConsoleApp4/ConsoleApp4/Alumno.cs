@@ -18,7 +18,14 @@
         }
     }
 
-    public string Apellido { get; private set; }
+    public string Apellido { get; set; }
+
+
+    //public int Edad { get; set; }
+
+    public int Edad { get { return 22; } }
+
+    public DateTime FechaNacimiento { get; set; }
 
 
 

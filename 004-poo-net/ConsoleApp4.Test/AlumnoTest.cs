@@ -25,5 +25,20 @@
             Assert.Equal("Programacion III", c1.Nombre);
 
         }
+
+
+        [Fact]
+        public void DebeCrearUnAlumnoDe22Anios()
+        {
+
+            var c1 = new Alumno();
+
+            c1.FechaNacimiento = new DateTime(2004, 1, 1);
+            //c1.Edad = 22;
+
+            Assert.Equal(22, c1.Edad);
+            Assert.Equal(2004, c1.FechaNacimiento.Year);
+
+        }
     }
 }
