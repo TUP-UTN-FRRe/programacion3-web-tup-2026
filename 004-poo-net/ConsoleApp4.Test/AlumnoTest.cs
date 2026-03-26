@@ -40,5 +40,19 @@
             Assert.Equal(2004, c1.FechaNacimiento.Year);
 
         }
+
+        [Fact]
+        public void DebeCrearUnAlumnoDe3Anios()
+        {
+
+            var c1 = new Alumno();
+
+            c1.FechaNacimiento = new DateTime(2022, 12, 18);
+          
+
+            Assert.Equal(3, c1.Edad);
+            Assert.Equal(2022, c1.FechaNacimiento.Year);
+
+        }
     }
 }

@@ -23,9 +23,22 @@
 
     //public int Edad { get; set; }
 
-    public int Edad { get { return 22; } }
+    public int Edad { get { return CalcularEdad(); } }
 
     public DateTime FechaNacimiento { get; set; }
+
+    private int CalcularEdad()
+    {
+        var hoy = DateTime.Today;
+        var edad = hoy.Year - FechaNacimiento.Year;
+
+        if (FechaNacimiento.Date > hoy.AddYears(-edad))
+        {
+            edad--;
+        }
+
+        return edad;
+    }
 
 
 
