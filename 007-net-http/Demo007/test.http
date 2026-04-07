@@ -1,0 +1,17 @@
+### GET request
+GET http://localhost:5147
+
+### POST request
+POST http://localhost:5147
+Content-Type: application/json
+
+{
+    "key": "value"
+}
+
+### POST request
+DELETE http://localhost:5147
+
+
+### GET index.html
+GET http://localhost:5147/index.html
