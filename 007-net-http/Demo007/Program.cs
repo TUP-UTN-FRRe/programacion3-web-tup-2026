@@ -16,12 +16,17 @@ const string HTML_INDEX_CONTENT = @"<html>
     </body>
 </html>";
 
+app.UseHttpsRedirection();
+
+// Static Files middleware
+app.MapStaticAssets();
+
+
 app.MapGet("/", () => "Hello World! GET");
 
 // Sirve el contenido HTML cuando se accede a /index.html con content-type text/html
 //app.MapGet("/index.html", () => HTML_CONTENT)
 app.MapGet("/index.html", () => Results.Content(HTML_INDEX_CONTENT, "text/html"));
-
 
 app.MapPost("/", () => "Hello World! POST");
 
