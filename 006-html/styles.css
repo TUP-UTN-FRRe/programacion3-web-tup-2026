@@ -7,3 +7,44 @@
 .texto-azul{
     color: blue;
 }
+
+
+ .titulo-general{
+            font-size: 50px;
+            text-decoration: underline;
+        }
+
+        .fuente-rojo{
+            color: red;
+        }
+
+        li {
+            color:blue;
+        }
+
+        h2{
+            background-color: #FF0000;
+        }
+
+        #miimagen{
+            width: 200px;
+            border: 15px solid fuchsia;
+        }
+
+        body{
+            
+            background-image: url('images/Starwars-Star Wars Star Destroyer wallpaper Death Star AT-AT Wallpaper.jpg');
+            
+  /* 2. Scale image to cover entire area without distortion */
+  background-size: cover;
+
+  /* 3. Prevent the image from repeating if it's too small */
+  background-repeat: no-repeat;
+
+  /* 4. Keep the image centered within the container */
+  background-position: center center;
+
+  /* 5. (Optional) Keep image fixed while scrolling */
+  background-attachment: fixed;
+
+        }
