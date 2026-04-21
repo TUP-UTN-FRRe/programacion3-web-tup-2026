@@ -40,5 +40,47 @@
             Assert.Equal("Item de Ejemplo 2 (Completo)", item.ToString());
 
         }
+
+        [Fact]
+        public void Titulo_AsignarYObtener_DebeRetornarValor()
+        {
+            var item = new Item { Titulo = "Comprar leche" };
+            Assert.Equal("Comprar leche", item.Titulo);
+        }
+
+        [Fact]
+        public void Color_AsignarYObtener_DebeRetornarValor()
+        {
+            var item = new Item { Color = "Rojo" };
+            Assert.Equal("Rojo", item.Color);
+        }
+
+        [Fact]
+        public void Estado_PorDefecto_DebeSerFalse()
+        {
+            var item = new Item();
+            Assert.False(item.Estado);
+        }
+
+        [Fact]
+        public void Estado_AsignarTrue_DebeRetornarTrue()
+        {
+            var item = new Item { Estado = true };
+            Assert.True(item.Estado);
+        }
+
+        [Fact]
+        public void ToString_EstadoPendiente_DebeRetornarFormatoCorrecto()
+        {
+            var item = new Item { Titulo = "Tarea", Estado = false };
+            Assert.Equal("Tarea (Pendiente)", item.ToString());
+        }
+
+        [Fact]
+        public void ToString_EstadoCompleto_DebeRetornarFormatoCorrecto()
+        {
+            var item = new Item { Titulo = "Tarea", Estado = true };
+            Assert.Equal("Tarea (Completo)", item.ToString());
+        }
     }
 }

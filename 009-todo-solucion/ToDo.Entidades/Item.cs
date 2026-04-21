@@ -26,5 +26,7 @@
             return $"{Titulo} ({(Estado ? "Completo" : "Pendiente")})";
         }
 
+        public string Color { get; set; }
+
     }
 }
