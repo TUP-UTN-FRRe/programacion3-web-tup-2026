@@ -4,7 +4,9 @@
     <Project Path="ToDo.Apps.WebApiApp/ToDo.Apps.WebApiApp.csproj" Id="2352b8f8-769a-4920-af20-a926c6371e11" />
   </Folder>
   <Folder Name="/Core/">
+    <Project Path="ToDo.Datos/ToDo.Datos.csproj" Id="9385b213-0f43-478b-868b-3713893d590a" />
     <Project Path="ToDo.Entidades/ToDo.Entidades.csproj" />
+    <Project Path="ToDo.Negocio/ToDo.Negocio.csproj" Id="94bf9f56-b320-4153-811b-3f91b2c8f19a" />
   </Folder>
   <Folder Name="/Tests/">
     <Project Path="ToDo.Entidades.Tests/ToDo.Entidades.Tests.csproj" Id="b8a2cc51-9d03-4cf6-a332-a2ee397db4fb" />
