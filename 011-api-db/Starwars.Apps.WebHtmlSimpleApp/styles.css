@@ -1,0 +1,77 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #0d0d0d;
+    color: #ffe81f;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px;
+    min-height: 100vh;
+}
+
+h1 {
+    font-size: 2.5rem;
+    margin-bottom: 30px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    text-shadow: 0 0 10px #ffe81f;
+}
+
+#btn-cargar {
+    background-color: #ffe81f;
+    color: #0d0d0d;
+    border: none;
+    padding: 12px 32px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 4px;
+    letter-spacing: 2px;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+#btn-cargar:hover {
+    background-color: #ffd700;
+    transform: scale(1.05);
+}
+
+#btn-cargar:active {
+    transform: scale(0.97);
+}
+
+#lista-jedis {
+    margin-top: 36px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+    max-width: 480px;
+}
+
+.jedi-card {
+    background-color: #1a1a1a;
+    border: 1px solid #ffe81f;
+    border-radius: 6px;
+    padding: 18px 24px;
+    font-size: 1.1rem;
+    letter-spacing: 1px;
+    box-shadow: 0 0 8px rgba(255, 232, 31, 0.2);
+}
+
+.jedi-card span.jedi-id {
+    color: #888;
+    font-size: 0.85rem;
+    margin-right: 10px;
+}
+
+#error-msg {
+    margin-top: 24px;
+    color: #ff4444;
+    font-size: 0.95rem;
+}
