@@ -19,6 +19,7 @@ cmd.CommandType = System.Data.CommandType.Text;
 
 conn.Open();
 
+//Obtenemos un DataReader para leer los resultados de la consulta
 var reader = cmd.ExecuteReader();
 
 Console.WriteLine("OK: Connection established");
