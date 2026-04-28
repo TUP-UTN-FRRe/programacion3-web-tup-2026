@@ -70,6 +70,35 @@ h1 {
     margin-right: 10px;
 }
 
+/* ── Loader ── */
+#loader {
+    margin-top: 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    font-size: 1rem;
+    letter-spacing: 2px;
+    color: #ffe81f;
+}
+
+.oculto {
+    display: none !important;
+}
+
+.spinner {
+    width: 48px;
+    height: 48px;
+    border: 5px solid rgba(255, 232, 31, 0.2);
+    border-top-color: #ffe81f;
+    border-radius: 50%;
+    animation: girar 0.8s linear infinite;
+}
+
+@keyframes girar {
+    to { transform: rotate(360deg); }
+}
+
 #error-msg {
     margin-top: 24px;
     color: #ff4444;
