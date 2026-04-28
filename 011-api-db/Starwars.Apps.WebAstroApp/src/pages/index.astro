@@ -1,0 +1,29 @@
+---
+import '../styles/global.css';
+---
+
+<html lang="es">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta name="generator" content={Astro.generator} />
+		<title>Jedis - Star Wars</title>
+	</head>
+	<body>
+		<h1>Jedis</h1>
+
+		<button id="btn-cargar">Cargar Jedis</button>
+
+		<div id="loader" class="loader oculto">
+			<div class="spinner"></div>
+			<span>Cargando...</span>
+		</div>
+
+		<div id="lista-jedis"></div>
+
+		<p id="error-msg"></p>
+
+		<!-- app.js en /public → se sirve sin procesamiento de Astro -->
+		<script src="/app.js" is:inline></script>
+	</body>
+</html>
