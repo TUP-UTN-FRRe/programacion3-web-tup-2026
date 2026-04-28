@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/Core/">
+    <Project Path="Starwars.Core.Business/Starwars.Core.Business.csproj" />
+    <Project Path="Starwars.Core.Data/Starwars.Core.Data.csproj" />
+    <Project Path="Starwars.Core.Entities/Starwars.Core.Entities.csproj" />
+  </Folder>
+  <Project Path="Starwars.Apps.ConsoleApp/Starwars.Apps.ConsoleApp.csproj" />
+</Solution>
