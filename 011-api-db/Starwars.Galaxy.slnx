@@ -5,4 +5,5 @@
     <Project Path="Starwars.Core.Entities/Starwars.Core.Entities.csproj" />
   </Folder>
   <Project Path="Starwars.Apps.ConsoleApp/Starwars.Apps.ConsoleApp.csproj" />
+  <Project Path="Starwars.Apps.WebApiApp/Starwars.Apps.WebApiApp.csproj" />
 </Solution>
