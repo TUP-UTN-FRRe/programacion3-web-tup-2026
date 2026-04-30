@@ -1,5 +1,8 @@
 ﻿namespace ToDo.Entidades
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class Item
     {
         public string Titulo { get; set; }
@@ -7,6 +10,10 @@
 
         private bool _estado;
 
+        /// <summary>
+        /// Indica si el item esta terminado o no
+        /// (false no terminado y true es terminado)
+        /// </summary>
         public bool Estado
         {
             get {
