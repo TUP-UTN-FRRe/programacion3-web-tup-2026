@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="Starwars.Auth.Api/Starwars.Auth.Api.csproj" />
+  <Project Path="Starwars.Auth.Web/Starwars.Auth.Web.csproj" />
+</Solution>

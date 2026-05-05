@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Starwars Auth Demo</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      min-height: 100vh;
+      background: #0a0a0f;
+      color: #e8e8e8;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 1rem;
+      background-image: radial-gradient(ellipse at top, #1a1a3e 0%, #0a0a0f 70%);
+    }
+
+    h1 {
+      font-size: 2rem;
+      letter-spacing: .1em;
+      color: #ffe81f;
+      text-shadow: 0 0 20px rgba(255,232,31,.4);
+      margin-bottom: .25rem;
+    }
+
+    .subtitle {
+      color: #888;
+      font-size: .9rem;
+      margin-bottom: 2rem;
+    }
+
+    .card {
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 12px;
+      padding: 1.5rem 2rem;
+      width: 100%;
+      max-width: 480px;
+      margin-bottom: 1.5rem;
+    }
+
+    .card h2 {
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: #ffe81f;
+      margin-bottom: 1rem;
+    }
+
+    label { display: block; font-size: .85rem; color: #aaa; margin-bottom: .25rem; }
+
+    input {
+      width: 100%;
+      padding: .6rem .9rem;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,.15);
+      background: rgba(255,255,255,.06);
+      color: #fff;
+      font-size: .95rem;
+      margin-bottom: 1rem;
+      outline: none;
+      transition: border-color .2s;
+    }
+    input:focus { border-color: #ffe81f; }
+
+    .btn-row { display: flex; gap: .75rem; flex-wrap: wrap; }
+
+    button {
+      flex: 1;
+      min-width: 140px;
+      padding: .65rem 1rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: .9rem;
+      font-weight: 600;
+      transition: opacity .2s, transform .1s;
+    }
+    button:active { transform: scale(.97); }
+    button:disabled { opacity: .45; cursor: not-allowed; }
+
+    .btn-primary   { background: #ffe81f; color: #0a0a0f; }
+    .btn-secondary { background: rgba(255,232,31,.15); color: #ffe81f; border: 1px solid rgba(255,232,31,.4); }
+    .btn-public    { background: #3d9970; color: #fff; }
+    .btn-secure    { background: #2980b9; color: #fff; }
+
+    .result-box {
+      margin-top: 1rem;
+      padding: .75rem 1rem;
+      border-radius: 8px;
+      background: rgba(0,0,0,.4);
+      font-family: 'Cascadia Code', 'Fira Code', monospace;
+      font-size: .85rem;
+      white-space: pre-wrap;
+      word-break: break-all;
+      min-height: 2.5rem;
+      border: 1px solid rgba(255,255,255,.08);
+    }
+
+    .tag {
+      display: inline-block;
+      font-size: .7rem;
+      padding: .15rem .5rem;
+      border-radius: 999px;
+      margin-bottom: .5rem;
+      font-weight: 700;
+      letter-spacing: .04em;
+    }
+    .tag-public  { background: rgba(61,153,112,.25);  color: #3d9970; border: 1px solid #3d9970; }
+    .tag-secure  { background: rgba(41,128,185,.25);  color: #2980b9; border: 1px solid #2980b9; }
+    .tag-token   { background: rgba(255,232,31,.15);  color: #ffe81f; border: 1px solid #ffe81f; }
+    .tag-error   { background: rgba(231, 76, 60,.2);  color: #e74c3c; border: 1px solid #e74c3c; }
+
+    .info { font-size: .78rem; color: #666; margin-top: .5rem; }
+    .token-display { word-break: break-all; }
+  </style>
+</head>
+<body>
+
+  <h1>⚡ Starwars Auth</h1>
+  <p class="subtitle">Demo JWT — Programación 3 · TUP UTN FRRe</p>
+
+  <!-- LOGIN -->
+  <div class="card">
+    <h2>🔑 Obtener Token JWT</h2>
+    <label for="username">Usuario</label>
+    <input id="username" type="text" placeholder="ej: luke" />
+
+    <label for="password">Contraseña <span class="info">(= usuario al revés, ej: ekul)</span></label>
+    <input id="password" type="password" placeholder="ej: ekul" />
+
+    <div class="btn-row">
+      <button class="btn-primary" onclick="getToken()">Obtener Token</button>
+      <button class="btn-secondary" onclick="clearToken()">Limpiar</button>
+    </div>
+
+    <div id="token-result" class="result-box">
+      <span style="color:#555">El token aparecerá aquí…</span>
+    </div>
+  </div>
+
+  <!-- ENDPOINTS -->
+  <div class="card">
+    <h2>🕐 Consultar Hora</h2>
+    <div class="btn-row">
+      <button class="btn-public"  onclick="getTime(false)">⏱ Sin Auth</button>
+      <button class="btn-secure"  onclick="getTime(true)">🔒 Con JWT</button>
+    </div>
+    <div id="time-result" class="result-box">
+      <span style="color:#555">El resultado aparecerá aquí…</span>
+    </div>
+  </div>
+
+  <script>
+    const API = 'http://localhost:5001';
+    let jwtToken = null;
+
+    async function getToken() {
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value.trim();
+      const box = document.getElementById('token-result');
+
+      if (!username || !password) {
+        renderResult(box, 'error', '⚠ Ingresá usuario y contraseña.');
+        return;
+      }
+
+      try {
+        const res = await fetch(`${API}/api/token`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password })
+        });
+
+        if (res.ok) {
+          const data = await res.json();
+          jwtToken = data.token;
+          const exp = new Date(data.expires).toLocaleString('es-AR');
+          renderResult(box, 'token',
+            `✅ Token obtenido!\n\nExpira: ${exp}\n\n${data.token}`);
+        } else {
+          jwtToken = null;
+          renderResult(box, 'error', `❌ ${res.status} — Credenciales inválidas.\n\nRecordá: la contraseña es el usuario al revés.`);
+        }
+      } catch (e) {
+        renderResult(box, 'error', `❌ Error de conexión: ${e.message}`);
+      }
+    }
+
+    async function getTime(useAuth) {
+      const box = document.getElementById('time-result');
+      const url = useAuth ? `${API}/api/time/secure` : `${API}/api/time`;
+      const headers = {};
+
+      if (useAuth) {
+        if (!jwtToken) {
+          renderResult(box, 'error', '⚠ Primero obtené un token JWT.');
+          return;
+        }
+        headers['Authorization'] = `Bearer ${jwtToken}`;
+      }
+
+      try {
+        const res = await fetch(url, { headers });
+
+        if (res.ok) {
+          const data = await res.json();
+          const tag = useAuth ? 'secure' : 'public';
+          const icon = useAuth ? '🔒' : '⏱';
+          const userLine = data.user ? `\nUsuario: ${data.user}` : '';
+          renderResult(box, tag,
+            `${icon} Hora del servidor: ${data.time}${userLine}\nAutenticado: ${data.secured}`);
+        } else {
+          renderResult(box, 'error', `❌ ${res.status} — ${res.statusText}`);
+        }
+      } catch (e) {
+        renderResult(box, 'error', `❌ Error de conexión: ${e.message}`);
+      }
+    }
+
+    function clearToken() {
+      jwtToken = null;
+      const box = document.getElementById('token-result');
+      box.innerHTML = '<span style="color:#555">Token limpiado.</span>';
+    }
+
+    function renderResult(box, type, text) {
+      const tagMap = {
+        token:  { cls: 'tag-token',  label: 'JWT' },
+        secure: { cls: 'tag-secure', label: 'AUTENTICADO' },
+        public: { cls: 'tag-public', label: 'PÚBLICO' },
+        error:  { cls: 'tag-error',  label: 'ERROR' },
+      };
+      const t = tagMap[type] || tagMap.error;
+      box.innerHTML = `<span class="tag ${t.cls}">${t.label}</span>\n<span class="token-display">${escHtml(text)}</span>`;
+    }
+
+    function escHtml(s) {
+      return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    }
+  </script>
+</body>
+</html>
