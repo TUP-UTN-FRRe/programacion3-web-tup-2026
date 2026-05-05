@@ -1,0 +1,42 @@
+@API_URL = https://localhost:7001
+
+### ── 1. Obtener hora SIN autenticación (público) ──────────────────────────
+GET {{API_URL}}/api/time2
+
+### ── 2. Obtener token JWT — credenciales válidas (luke / ekul) ────────────
+# Regla: password == reverse(username), case-insensitive
+POST {{API_URL}}/api/auth/token
+Content-Type: application/json
+
+{
+  "username": "Luke",
+  "password": "ekul"
+}
+
+### ── 3. Obtener token JWT — otro usuario válido (leia / aiel) ─────────────
+POST {{API_URL}}/api/auth/token
+Content-Type: application/json
+
+{
+  "username": "leia",
+  "password": "aiel"
+}
+
+### ── 4. Obtener token JWT — credenciales INVÁLIDAS ───────────────────────
+POST {{API_URL}}/api/auth/token
+Content-Type: application/json
+
+{
+  "username": "vader",
+  "password": "wrongpass"
+}
+
+### ── 5. Obtener hora CON autenticación ────────────────────────────────────
+# Reemplazá TOKEN_AQUI con el valor del campo "token" del request #2 o #3
+@TOKEN = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiTHVrZSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IlVzZXIiLCJqdGkiOiIwMjM2NzczNS05ZWExLTQyMGYtOTlhZC05YTQ0MDdiNjM3MGYiLCJleHAiOjE3NzgwMTkwOTUsImlzcyI6IlN0YXJ3YXJzLkF1dGguQXBpIiwiYXVkIjoiU3RhcndhcnMuQXV0aC5XZWIifQ.8hzB0MRNWRqKDvqsZxgUdGLeOY5_GVXKy8OiKiZ9Ck4
+
+GET {{API_URL}}/api/time2/secure
+Authorization: Bearer {{TOKEN}}
+
+### ── 6. Obtener hora segura SIN token — debe devolver 401 ────────────────
+GET {{API_URL}}/api/time2/secure

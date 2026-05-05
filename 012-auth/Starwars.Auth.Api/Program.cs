@@ -15,7 +15,7 @@ var jwtIssuer = builder.Configuration["Jwt:Issuer"]!;
 var jwtAud    = builder.Configuration["Jwt:Audience"]!;
 var jwtExpMin = int.Parse(builder.Configuration["Jwt:ExpiresInMinutes"]!);
 
-
+//Config Auth
 builder.Services
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -33,16 +33,21 @@ builder.Services
     });
 
 builder.Services.AddAuthorization();
+builder.Services.AddControllers();
 
 builder.Services.AddCors(o => o.AddDefaultPolicy(p =>
     p.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod()));
 
 var app = builder.Build();
 
+
+
+
 app.UseHttpsRedirection();
 app.UseCors();
 app.UseAuthentication();
 app.UseAuthorization();
+app.MapControllers();
 
 // POST /api/auth/token — valida user/pass y devuelve JWT
 // Regla: password == reverse(user), case-insensitive
@@ -90,9 +95,9 @@ app.MapGet("/api/time", () =>
 app.MapGet("/api/time/secure", (ClaimsPrincipal user) =>
     Results.Ok(new
     {
-        time    = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
+        time = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
         secured = true,
-        user    = user.Identity?.Name
+        user = user.Identity?.Name
     }))
     .RequireAuthorization();
 
