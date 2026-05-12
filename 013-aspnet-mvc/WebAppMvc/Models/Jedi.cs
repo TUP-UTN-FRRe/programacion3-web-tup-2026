@@ -1,3 +1,5 @@
+namespace WebAppMvc.Models;
+
 public class Jedi
 {
     public int Id { get; set; }

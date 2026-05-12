@@ -10,8 +10,21 @@ public class JediController : Controller
     public IActionResult Index()
     {
         //acciones 
+        var jedis = new List<Jedi>();
 
-        return View();
+        for (int i = 0; i < 10; i++)
+        {
+            var jedi = new Jedi
+            {
+                Id = i,
+                Name = "Luke Skywalker",
+                LightSaberColor = "Green"
+            }; 
+
+            jedis.Add(jedi);
+        }
+
+        return View(jedis);
     }
 
 
@@ -26,7 +39,7 @@ public class JediController : Controller
             LightSaberColor = "Green"
         };
 
-        return View();
+        return View(jedi);
     }
 
 }
