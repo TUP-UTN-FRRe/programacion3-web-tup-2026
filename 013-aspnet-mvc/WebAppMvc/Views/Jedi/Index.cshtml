@@ -1,0 +1,23 @@
+﻿@{
+    ViewData["Title"] = "Jedis";
+}
+
+<h2 class="display-4">Jedis!</h2>
+
+
+@{
+    var suma = 1 + 2;
+}
+
+@if (suma > 2)
+{
+    <p>La suma es mayor a 2</p>
+}
+else
+{
+    <p>La suma es menor o igual a 2</p>
+}
+
+<p>La suma de 1 + 2 es: @suma</p>
+
+<p>La suma de 2 + 3 es: @(2 + 3)</p>

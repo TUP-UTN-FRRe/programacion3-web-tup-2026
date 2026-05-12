@@ -1,0 +1,5 @@
+<Solution>
+  <Folder Name="/013-aspnet-mvc/">
+    <Project Path="013-aspnet-mvc/WebAppMvc/WebAppMvc.csproj" />
+  </Folder>
+</Solution>
