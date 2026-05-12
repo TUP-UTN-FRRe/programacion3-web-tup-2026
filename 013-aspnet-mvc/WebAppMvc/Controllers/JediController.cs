@@ -14,4 +14,19 @@ public class JediController : Controller
         return View();
     }
 
+
+    [HttpGet]
+    public IActionResult Detail(int id)
+    {
+        //acciones 
+        var jedi = new Jedi
+        {
+            Id = id,
+            Name = "Luke Skywalker",
+            LightSaberColor = "Green"
+        };
+
+        return View();
+    }
+
 }
