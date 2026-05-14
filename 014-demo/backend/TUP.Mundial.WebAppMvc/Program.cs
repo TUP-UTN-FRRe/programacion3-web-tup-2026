@@ -20,6 +20,14 @@ app.UseAuthorization();
 
 app.MapStaticAssets();
 
+
+
+app.MapControllerRoute(
+    name: "partido-amigable",
+    pattern: "/ticket/{fase}/{equipo1}-vs-{equipo2}",
+    defaults: new { controller = "Partido", action = "Detalle" })
+    .WithStaticAssets();
+
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}")
