@@ -1,5 +1,33 @@
-﻿@{
+﻿@model IEnumerable<TUP.Mundial.WebAppMvc.Models.Partido>
+@{
     ViewData["Title"] = "Partidos...";
 }
 
-Partidos...
+Partidos...@Model.Count();
+
+@{
+    var suma = 1 + 2;
+}
+
+@suma
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Equipo Local</th>
+            <th>Equipo Visitante</th>
+            <th>Goles Local</th>
+            <th>Goles Visitante</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Local.Nombre</td>
+                <td>@item.Visitante.Nombre</td>
+            </tr>
+        }
+    </tbody>

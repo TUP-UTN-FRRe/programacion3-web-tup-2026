@@ -8,7 +8,19 @@ namespace TUP.Mundial.WebAppMvc.Controllers
     {
         public IActionResult Index()
         {
-            return View();
+
+            var partidos = new List<Partido>();
+
+            for (int i = 1; i < 100; i++)
+            {
+                partidos.Add(new Partido() { 
+                    Local = new Equipo() { Nombre = $"Equipo Local {i}" },
+                    Visitante = new Equipo() { Nombre = $"Equipo Visitante {i}" }
+                });
+
+            }
+
+            return View(partidos);
         }
 
         public IActionResult Detalle(string fase, 
