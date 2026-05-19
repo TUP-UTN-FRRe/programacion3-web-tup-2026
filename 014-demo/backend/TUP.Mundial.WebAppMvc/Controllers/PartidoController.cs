@@ -23,11 +23,13 @@ namespace TUP.Mundial.WebAppMvc.Controllers
             return View(partidos);
         }
 
-        public IActionResult Detalle(string fase, 
-                                        string equipo1, 
-                                        string equipo2)
+        //public IActionResult Detalle(string fase, 
+        //                                string equipo1, 
+        //                                string equipo2)
+        public IActionResult Detalle(PartidoViewModel partidoVm)
         {
-            return View("Index");
+            
+            return View("DetallePartidoFaseGrupos", partidoVm);
         }
     }
 }

@@ -9,7 +9,7 @@ Partidos...@Model.Count();
     var suma = 1 + 2;
 }
 
-@suma
+Resultado de la suma: @suma
 
 
 <table class="table">
@@ -23,11 +23,11 @@ Partidos...@Model.Count();
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @foreach (var partido in Model)
         {
             <tr>
-                <td>@item.Local.Nombre</td>
-                <td>@item.Visitante.Nombre</td>
+                <td>@partido.Local.Nombre</td>
+                <td>@partido.Visitante.Nombre</td>
             </tr>
         }
     </tbody>
