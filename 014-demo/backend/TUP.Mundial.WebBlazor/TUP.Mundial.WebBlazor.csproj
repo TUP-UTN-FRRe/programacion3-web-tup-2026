@@ -7,4 +7,8 @@
     <BlazorDisableThrowNavigationException>true</BlazorDisableThrowNavigationException>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\TUP.Mundial.Entidades\TUP.Mundial.Entidades.csproj" />
+  </ItemGroup>
+
 </Project>
