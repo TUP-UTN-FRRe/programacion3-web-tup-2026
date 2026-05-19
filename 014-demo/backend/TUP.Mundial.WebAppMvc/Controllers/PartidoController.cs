@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using TUP.Mundial.Entidades;
 using TUP.Mundial.WebAppMvc.Models;
 
 namespace TUP.Mundial.WebAppMvc.Controllers
