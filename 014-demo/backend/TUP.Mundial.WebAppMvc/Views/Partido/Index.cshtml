@@ -15,9 +15,7 @@ Resultado de la suma: @suma
 <table class="table">
     <thead>
         <tr>
-            <th>Id</th>
-            <th>Equipo Local</th>
-            <th>Equipo Visitante</th>
+            <th>Partido</th>
             <th>Goles Local</th>
             <th>Goles Visitante</th>
         </tr>
@@ -26,8 +24,14 @@ Resultado de la suma: @suma
         @foreach (var partido in Model)
         {
             <tr>
-                <td>@partido.Local.Nombre</td>
-                <td>@partido.Visitante.Nombre</td>
+                <td>
+                    @partido.Local.Nombre vs @partido.Visitante.Nombre
+                    <br />
+                    <a href="/ticket/grupo/@(partido.Local.Nombre)-vs-@(partido.Visitante.Nombre)" class="btn btn-primary">Comprar tickets</a>
+
+                </td>
+                <td>0</td>
+                <td>0</td>
             </tr>
         }
     </tbody>
