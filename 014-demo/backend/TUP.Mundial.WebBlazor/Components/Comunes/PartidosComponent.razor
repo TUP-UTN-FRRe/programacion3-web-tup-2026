@@ -1,6 +1,65 @@
-﻿<h3>Partidos Component</h3>
-Listado... 
+﻿@using TUP.Mundial.Entidades
+@using TUP.Mundial.Negocio
+
+<h3>Partidos Component</h3>
+
+<button @onclick="Cargar">Cargar</button>
+ 
+@if (cargando)
+{
+    <div>Cargando...</div>
+}
+
+@if (partidos is not null)
+{
+<table class="table">
+    <thead>
+        <tr>
+            <th>Partido</th>
+            <th>Goles Local</th>
+            <th>Goles Visitante</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var partido in partidos)
+        {
+            <tr>
+                <td>
+                    @partido.Local.Nombre vs @partido.Visitante.Nombre
+                    <br />
+                    <a href="/ticket/grupo/@(partido.Local.Nombre)-vs-@(partido.Visitante.Nombre)" class="btn btn-primary">Comprar tickets</a>
+
+                </td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        }
+    </tbody>
+</table>
+}
 
 @code {
+    private List<Partido> partidos = null;
+    private bool cargando = false;
+
+    protected override void OnInitialized()
+    {
+
+    }
+
+    private void Cargar()    
+    {
+
+        partidos = null;
+        cargando = true;
+
+        StateHasChanged();
+
+        Thread.Sleep(2000);
+        var partidoNegocio = new PartidoNegocio();
+        partidos = partidoNegocio.ObtenerListado();
+
+        cargando = false;
+    }
 
 }
