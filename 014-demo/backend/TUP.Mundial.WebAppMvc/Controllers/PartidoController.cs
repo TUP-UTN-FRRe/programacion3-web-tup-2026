@@ -10,7 +10,7 @@ namespace TUP.Mundial.WebAppMvc.Controllers
     {
         public IActionResult Index()
         {
-
+            
             var partidoNegocio = new TUP.Mundial.Negocio.PartidoNegocio();
 
             var partidos = partidoNegocio.ObtenerListado();
