@@ -1,6 +1,6 @@
 ﻿namespace TUP.Mundial.WebAppMvc.Models
 {
-    public class PartidoViewModel
+    public class PartidoRequestViewModel
     {
         public string Fase { get; set; }
         public string Equipo1 { get; set; }

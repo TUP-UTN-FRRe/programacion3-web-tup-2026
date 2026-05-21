@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationModel;
+using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using TUP.Mundial.Entidades;
 using TUP.Mundial.WebAppMvc.Models;
@@ -24,12 +25,21 @@ namespace TUP.Mundial.WebAppMvc.Controllers
             return View(partidos);
         }
 
+
+
+
         //public IActionResult Detalle(string fase, 
         //                                string equipo1, 
         //                                string equipo2)
-        public IActionResult Detalle(PartidoViewModel partidoVm)
+        public IActionResult Detalle(PartidoRequestViewModel partidoVm)
         {
             
+            //var req1 = new PartidoRequestViewModel()  
+            //{
+            //    Fase = "grupo"
+            //};
+
+
             return View("DetallePartidoFaseGrupos", partidoVm);
         }
     }
