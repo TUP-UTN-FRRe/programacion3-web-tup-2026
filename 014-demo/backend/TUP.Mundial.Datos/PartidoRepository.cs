@@ -11,7 +11,7 @@ namespace TUP.Mundial.Datos
             var partidos = new List<Partido>();
  
             for (int i = 1; i < 100; i++)
-            {
+            {                
                 partidos.Add(new Partido()
                 {
                     Local = new Equipo() { Nombre = $"Equipo Local {i}" },

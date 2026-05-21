@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TUP.Mundial.Entidades\TUP.Mundial.Entidades.csproj" />
+    <ProjectReference Include="..\TUP.Mundial.Negocio\TUP.Mundial.Negocio.csproj" />
   </ItemGroup>
 
 </Project>

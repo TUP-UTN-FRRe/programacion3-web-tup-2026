@@ -11,16 +11,9 @@ namespace TUP.Mundial.WebAppMvc.Controllers
         public IActionResult Index()
         {
 
-            var partidos = new List<Partido>();
+            var partidoNegocio = new TUP.Mundial.Negocio.PartidoNegocio();
 
-            for (int i = 1; i < 100; i++)
-            {
-                partidos.Add(new Partido() { 
-                    Local = new Equipo() { Nombre = $"Equipo Local {i}" },
-                    Visitante = new Equipo() { Nombre = $"Equipo Visitante {i}" }
-                });
-
-            }
+            var partidos = partidoNegocio.ObtenerListado();
 
             return View(partidos);
         }
