@@ -1,5 +1,6 @@
 <Solution>
   <Project Path="TUP.Mundial.Datos/TUP.Mundial.Datos.csproj" />
+  <Project Path="TUP.Mundial.DatosEF/TUP.Mundial.DatosEF.csproj" Id="0f70510c-b1cf-42ef-8722-30e123014f0e" />
   <Project Path="TUP.Mundial.Entidades/TUP.Mundial.Entidades.csproj" Id="573e3fde-71c5-46d9-ba08-14bd8f331367" />
   <Project Path="TUP.Mundial.Negocio/TUP.Mundial.Negocio.csproj" />
   <Project Path="TUP.Mundial.WebAppMvc/TUP.Mundial.WebAppMvc.csproj" />

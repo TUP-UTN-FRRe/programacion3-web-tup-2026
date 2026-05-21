@@ -7,8 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TUP.Mundial.DatosEF\TUP.Mundial.DatosEF.csproj" />
-    <ProjectReference Include="..\TUP.Mundial.Datos\TUP.Mundial.Datos.csproj" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.8" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\TUP.Mundial.Entidades\TUP.Mundial.Entidades.csproj" />
   </ItemGroup>
 
