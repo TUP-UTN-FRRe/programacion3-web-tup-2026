@@ -15,6 +15,7 @@ public class Partido
 
     [ForeignKey("EquipoIdLocal")]
     public Equipo Local { get; set;}
+
     [ForeignKey("EquipoIdVisitante")]
     public Equipo Visitante { get; set; }
    
