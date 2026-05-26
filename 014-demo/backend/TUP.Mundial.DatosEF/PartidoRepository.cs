@@ -16,13 +16,14 @@ namespace TUP.Mundial.DatosEF
         {
             using (var context = new MundialFIFA2026Context())
             {
-
+                //LINQ
                 var query = context.Partidos
                                     .Include(p => p.Local)
                                     .Include(p => p.Visitante);
 
-                //var query = from p in context.Partidos
-                //            select p;
+
+                //var query2 = from p in context.Partidos
+                //             select p.Local;
 
 
 

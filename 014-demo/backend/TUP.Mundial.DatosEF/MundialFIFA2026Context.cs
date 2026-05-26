@@ -12,6 +12,7 @@ namespace TUP.Mundial.DatosEF
         public DbSet<Equipo> Equipos { get; set; }
         public DbSet<Partido> Partidos { get; set; }
 
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             var connection = "Server=localhost;Database=MundialFIFA2026;Integrated Security=True;TrustServerCertificate=True;";

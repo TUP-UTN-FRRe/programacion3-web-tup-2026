@@ -12,6 +12,7 @@ namespace TUP.Mundial.Negocio
 
         public List<Partido> ObtenerListado()
         {
+            //return ObtenerListadoADONET();
             return ObtenerListadoEF();
         }
 
