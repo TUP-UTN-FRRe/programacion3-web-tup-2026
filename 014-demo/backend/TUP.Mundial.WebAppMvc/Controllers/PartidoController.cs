@@ -26,7 +26,6 @@ namespace TUP.Mundial.WebAppMvc.Controllers
         //                                string equipo2)
         public IActionResult Detalle(PartidoRequestViewModel partidoVm)
         {
-            
             //var req1 = new PartidoRequestViewModel()  
             //{
             //    Fase = "grupo"
