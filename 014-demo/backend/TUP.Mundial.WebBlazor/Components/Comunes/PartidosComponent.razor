@@ -1,14 +1,15 @@
 ﻿@using TUP.Mundial.Entidades
 @using TUP.Mundial.Entidades.Filtros
 @using TUP.Mundial.Negocio
+@implements IDisposable
 
 <h3>Partidos</h3>
 
-<InputText @bind-Value="textoABuscar" 
+<InputText Value="@textoABuscar"
+           ValueChanged="@((string value) => OnTextoChanged(value))"
+           ValueExpression="@(() => textoABuscar)"
            placeholder="Ingrese texto a buscar..." 
            class="form-control mb-3" />
-
-<button @onclick="Buscar">Buscar</button>
  
 @if (cargando)
 {
@@ -47,10 +48,29 @@
     private string textoABuscar = string.Empty;
     private List<Partido> partidos = null;
     private bool cargando = false;
+    private System.Threading.Timer? debounceTimer;
 
     protected override void OnInitialized()
     {
         Buscar();
+    }
+
+    private void OnTextoChanged(string value)
+    {
+        textoABuscar = value;
+
+        // Cancelar el timer anterior si existe
+        debounceTimer?.Dispose();
+
+        // Crear un nuevo timer que ejecutará la búsqueda después de 500ms
+        debounceTimer = new System.Threading.Timer(_ =>
+        {
+            InvokeAsync(() =>
+            {
+                Buscar();
+                StateHasChanged();
+            });
+        }, null, 500, System.Threading.Timeout.Infinite);
     }
 
     private void Buscar()           
@@ -72,6 +92,11 @@
         partidos = partidoNegocio.ObtenerListado(filtro);
 
         cargando = false;
+    }
+
+    public void Dispose()
+    {
+        debounceTimer?.Dispose();
     }
 
 }
