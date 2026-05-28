@@ -1,9 +1,14 @@
 ﻿@using TUP.Mundial.Entidades
+@using TUP.Mundial.Entidades.Filtros
 @using TUP.Mundial.Negocio
 
-<h3>Partidos Component</h3>
+<h3>Partidos</h3>
 
-<button @onclick="Cargar">Cargar</button>
+<InputText @bind-Value="textoABuscar" 
+           placeholder="Ingrese texto a buscar..." 
+           class="form-control mb-3" />
+
+<button @onclick="Buscar">Buscar</button>
  
 @if (cargando)
 {
@@ -39,15 +44,16 @@
 }
 
 @code {
+    private string textoABuscar = string.Empty;
     private List<Partido> partidos = null;
     private bool cargando = false;
 
     protected override void OnInitialized()
     {
-
+        Buscar();
     }
 
-    private void Cargar()    
+    private void Buscar()           
     {
 
         partidos = null;
@@ -57,7 +63,13 @@
 
         //Thread.Sleep(2000);
         var partidoNegocio = new PartidoNegocio();
-        partidos = partidoNegocio.ObtenerListado();
+
+        var filtro = new PartidoFiltro()
+            {
+                TextoABuscar = textoABuscar
+            };
+
+        partidos = partidoNegocio.ObtenerListado(filtro);
 
         cargando = false;
     }

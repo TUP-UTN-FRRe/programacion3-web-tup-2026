@@ -1,5 +1,6 @@
 ﻿
 using TUP.Mundial.Entidades;
+using TUP.Mundial.Entidades.Filtros;
 
 namespace TUP.Mundial.Negocio
 {
@@ -13,13 +14,19 @@ namespace TUP.Mundial.Negocio
         public List<Partido> ObtenerListado()
         {
             //return ObtenerListadoADONET();
-            return ObtenerListadoEF();
+            return ObtenerListadoEF(new PartidoFiltro());
         }
 
-        public List<Partido> ObtenerListadoEF()
+        public List<Partido> ObtenerListado(PartidoFiltro filtro)
+        {
+            //return ObtenerListadoADONET();
+            return ObtenerListadoEF(filtro);
+        }
+
+        public List<Partido> ObtenerListadoEF(PartidoFiltro filtro)
         {
             var partidoRepository = new TUP.Mundial.DatosEF.PartidoRepository();
-            return partidoRepository.ObtenerListado();
+            return partidoRepository.ObtenerListado(filtro);
         }
 
         public List<Partido> ObtenerListadoADONET()
