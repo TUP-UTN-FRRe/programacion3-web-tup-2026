@@ -1,0 +1,14 @@
+﻿@page "/ticket/{fase}/{equipo1}-vs-{equipo2}"
+
+<h3>TicketPartido</h3>
+
+@code {
+    [Parameter]
+    public string Fase { get; set; }
+
+    [Parameter]
+    public string Equipo1 { get; set; }
+
+    [Parameter]
+    public string Equipo2 { get; set; }
+}
