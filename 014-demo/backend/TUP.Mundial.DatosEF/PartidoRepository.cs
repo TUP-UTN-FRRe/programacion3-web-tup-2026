@@ -46,6 +46,25 @@ namespace TUP.Mundial.DatosEF
             }
         }
 
-      
+
+        public int Cantidad(PartidoFiltro filtro)
+        {
+            using (var context = new MundialFIFA2026Context())
+            {
+                //LINQ
+                var query = context.Partidos
+                                    .Where(p => p.Local.Nombre.Contains(filtro.TextoABuscar)
+                                            || p.Visitante.Nombre.Contains(filtro.TextoABuscar))
+                                    .Include(p => p.Local)
+                                    .Include(p => p.Visitante);
+
+
+                return query.Count();
+            }
+        }
+
+
+
+
     }
 }
