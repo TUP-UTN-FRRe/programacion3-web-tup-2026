@@ -36,7 +36,7 @@ var summaries = new[]
 
 app.MapGet("/", () =>
 {    
-    return $"OK {titulo}";
+    return $"OK {titulo} | {conexion2}";
 })
 .WithName("Default");
 

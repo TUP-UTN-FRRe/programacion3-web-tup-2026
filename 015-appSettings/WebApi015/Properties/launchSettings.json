@@ -10,7 +10,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "https": {
+    "https-demo": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": false,
