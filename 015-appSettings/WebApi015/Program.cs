@@ -1,3 +1,4 @@
+using System.Security;
 using WebApi015.Config;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -5,15 +6,19 @@ var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
 configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
              .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true)
-             .AddEnvironmentVariables();
+             .AddEnvironmentVariables()
+             .AddUserSecrets<Program>();
 
 string titulo = configuration["TUP:Titulo"];
+
+SecureString demo;
 
 //Cadenas de conexion
 string conexion1 = configuration.GetConnectionString("Conexion1");
 string conexion2 = configuration["ConnectionStrings:Conexion2"];
 
 var tupOptions = configuration.GetSection("TUP").Get<TUPOptions>();
+
 
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
@@ -35,8 +40,10 @@ var summaries = new[]
 };
 
 app.MapGet("/", () =>
-{    
-    return $"OK {titulo} | {conexion2}";
+{
+    //return $"OK {titulo} | {conexion2}";
+
+    return $"OK {tupOptions.Titulo} | {conexion2}";
 })
 .WithName("Default");
 
