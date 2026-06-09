@@ -49,6 +49,28 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 
+//Middleware Demo1
+app.Use(async (context, next) =>
+{
+    Console.WriteLine($"[{DateTime.Now:HH:mm:ss}] Demo1 Request {context.Request.Method} {context.Request.Path}");
+    
+    await next();
+
+    Console.WriteLine($"[{DateTime.Now:HH:mm:ss}] Demo1 Response {context.Response.StatusCode}");
+});
+
+
+//Middleware Demo2
+app.Use(async (context, next) =>
+{
+    Console.WriteLine($"[{DateTime.Now:HH:mm:ss}] Demo2 Request {context.Request.Method} {context.Request.Path}");
+
+    await next();
+
+    Console.WriteLine($"[{DateTime.Now:HH:mm:ss}] Demo2 Response {context.Response.StatusCode}");
+});
+
+
 // POST /api/auth/token — valida user/pass y devuelve JWT
 // Regla: password == reverse(user), case-insensitive
 app.MapPost("/api/auth/token", (LoginRequest req) =>
@@ -89,7 +111,12 @@ app.MapPost("/api/auth/token", (LoginRequest req) =>
 
 // GET /api/time — público, sin autenticación
 app.MapGet("/api/time", () =>
-    Results.Ok(new { time = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), secured = false }));
+    Results.Ok(new 
+        { 
+            time = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
+            secured = false,
+            user = string.Empty
+        }));
 
 // GET /api/time/secure — requiere JWT válido
 app.MapGet("/api/time/secure", (ClaimsPrincipal user) =>
