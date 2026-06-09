@@ -33,7 +33,7 @@ Content-Type: application/json
 
 ### ── 5. Obtener hora CON autenticación ────────────────────────────────────
 # Reemplazá TOKEN_AQUI con el valor del campo "token" del request #2 o #3
-@TOKEN = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiTHVrZSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IlVzZXIiLCJqdGkiOiJiOTRmNjNmMi0wZmU3LTQwZjUtYTM3MC01ODY4MWFkY2Y4MTciLCJleHAiOjE3Nzg2MTQ0NzUsImlzcyI6IlN0YXJ3YXJzLkF1dGguQXBpIiwiYXVkIjoiU3RhcndhcnMuQXV0aC5XZWIifQ.WC54Wa1NVl2L-oXC1H0QHGWVXSwI3HtirvnMOwYgWRY
+@TOKEN = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoibGVpYSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IlVzZXIiLCJqdGkiOiI1ZWY0NGI0ZS0zZWRiLTQ3MzEtYTZhNC1kZjk3OTE0ZDVhNmQiLCJleHAiOjE3ODEwMzY0NDIsImlzcyI6IlN0YXJ3YXJzLkF1dGguQXBpIiwiYXVkIjoiU3RhcndhcnMuQXV0aC5XZWIifQ.hmM5cLVNvmC8td244Bol9dRo1bJoO5ZNI3D0_ltgNUc
 
 GET {{API_URL}}/api/time2/secure
 Authorization: Bearer {{TOKEN}}

@@ -10,6 +10,7 @@ public class Time2Controller : ControllerBase
 {
     // GET /api/time2 — público, sin autenticación
     [HttpGet]
+    [AllowAnonymous]
     public IActionResult GetTime()
     {
         return Ok(new
