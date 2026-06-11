@@ -48,7 +48,7 @@ app.UseCors();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
-
+    
 //Middleware Demo1
 app.Use(async (context, next) =>
 {
@@ -75,18 +75,32 @@ app.Use(async (context, next) =>
 // Regla: password == reverse(user), case-insensitive
 app.MapPost("/api/auth/token", (LoginRequest req) =>
 {
-    var user     = req.Username?.Trim() ?? "";
+    var username     = req.Username?.Trim() ?? "";
     var pass     = req.Password?.Trim() ?? "";
 
-    var reversed = new string(user.ToLower().Reverse().ToArray());
+    
+    var authService = new AuthService();
 
-    if (string.IsNullOrEmpty(user) 
-        || !pass.Equals(reversed, StringComparison.OrdinalIgnoreCase))
+    //Opcion 1: Validar con la regla de negocio directamente en el endpoint
+    //var reversed = new string(username.ToLower().Reverse().ToArray());
+    //if (string.IsNullOrEmpty(user)
+    //   || !pass.Equals(reversed, StringComparison.OrdinalIgnoreCase))
+    //    return Results.Unauthorized();
+
+
+    //Get user from DB (simulated)
+    var userData = GetUserFromDb(username);
+
+    if (userData is null 
+        || !authService.IsValid(userData, pass)) { 
         return Results.Unauthorized();
+    }
+
+   
 
     var claims = new[]
     {
-        new Claim(ClaimTypes.Name, user),
+        new Claim(ClaimTypes.Name, userData.Username),
         new Claim(ClaimTypes.Role, "User"),
         new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
     };
@@ -108,6 +122,21 @@ app.MapPost("/api/auth/token", (LoginRequest req) =>
         expires = token.ValidTo
     });
 });
+
+ User GetUserFromDb(string username)
+{
+    var passOriginal = "123456";
+    var salt = Encoding.UTF8.GetBytes("X");
+    var passOriginalHash = PasswordSha256.HashPassword(passOriginal, salt);
+
+    var userData = new User()
+    {
+        PasswordHash = Encoding.UTF8.GetBytes(passOriginalHash),
+        Salt = Encoding.UTF8.GetBytes("X")
+    };
+
+    return userData;
+}
 
 // GET /api/time — público, sin autenticación
 app.MapGet("/api/time", () =>
