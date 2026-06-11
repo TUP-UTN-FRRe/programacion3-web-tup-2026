@@ -88,8 +88,10 @@ app.MapPost("/api/auth/token", (LoginRequest req) =>
     //    return Results.Unauthorized();
 
 
+    //Opcion 2: Validar hash+salt
     //Get user from DB (simulated)
     var userData = GetUserFromDb(username);
+
 
     if (userData is null 
         || !authService.IsValid(userData, pass)) { 
@@ -126,13 +128,14 @@ app.MapPost("/api/auth/token", (LoginRequest req) =>
  User GetUserFromDb(string username)
 {
     var passOriginal = "123456";
-    var salt = Encoding.UTF8.GetBytes("X");
+    var salt = Encoding.UTF8.GetBytes("L");
     var passOriginalHash = PasswordSha256.HashPassword(passOriginal, salt);
 
     var userData = new User()
     {
-        PasswordHash = Encoding.UTF8.GetBytes(passOriginalHash),
-        Salt = Encoding.UTF8.GetBytes("X")
+        Username = username,
+        PasswordHash = passOriginalHash,
+        Salt = salt
     };
 
     return userData;

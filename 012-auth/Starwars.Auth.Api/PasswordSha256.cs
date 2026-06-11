@@ -11,7 +11,7 @@ namespace Starwars.Auth.Api
         /// Genera el hash SHA-256 de la contraseña concatenada con el salt.
         /// El resultado se devuelve en Base64.
         /// </summary>
-        public static string HashPassword(
+        public static byte[] HashPassword(
             string password,
             byte[] salt)
         {
@@ -20,7 +20,7 @@ namespace Starwars.Auth.Api
 
             byte[] hashBytes = ComputeHash(password, salt);
 
-            return Convert.ToBase64String(hashBytes);
+            return hashBytes;
         }
 
         /// <summary>
