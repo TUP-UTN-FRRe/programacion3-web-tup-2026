@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Starwars.Auth.Api.Entities;
 
 namespace Starwars.Auth.Api.Controllers;
 
@@ -13,10 +14,12 @@ public class Time2Controller : ControllerBase
     [AllowAnonymous]
     public IActionResult GetTime()
     {
+        var saludo = new Saludo();
         return Ok(new
         {
             time    = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
-            secured = false
+            secured = false,
+            messsage = saludo.Saludar()
         });
     }
 
@@ -25,11 +28,14 @@ public class Time2Controller : ControllerBase
     [Authorize]
     public IActionResult GetSecureTime()
     {
+        var saludo = new Saludo();
+
         return Ok(new
         {
             time    = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
             secured = true,
-            user    = User.Identity?.Name
+            user    = User.Identity?.Name,
+            messsage = saludo.Saludar()
         });
     }
 }
