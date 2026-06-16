@@ -18,8 +18,8 @@ POST {{API_URL}}/api/auth/token
 Content-Type: application/json
 
 {
-  "username": "leia",
-  "password": "123456"
+  "Username": "leia",
+  "Password": "12345678"
 }
 
 ### ── 4. Obtener token JWT — credenciales INVÁLIDAS ───────────────────────

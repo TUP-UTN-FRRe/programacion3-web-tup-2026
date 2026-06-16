@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
 using Starwars.Auth.Api;
+using Starwars.Auth.Api.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -75,10 +76,29 @@ app.Use(async (context, next) =>
 // Regla: password == reverse(user), case-insensitive
 app.MapPost("/api/auth/token", (LoginRequest req) =>
 {
-    var username     = req.Username?.Trim() ?? "";
-    var pass     = req.Password?.Trim() ?? "";
+    //var username     = req.Username?.Trim() ?? string.Empty;
+    //var pass     = req.Password?.Trim() ?? string.Empty;
 
-    
+    //Fluent Validation
+    //--------------------------------------------------------------
+    var validator = new LoginRequestValidator();
+    var resultValidate = validator.Validate(req);
+
+    if (!resultValidate.IsValid)
+    {
+        return Results.BadRequest(resultValidate.Errors);
+    }
+
+    //Data Annotations
+    //--------------------------------------------------------------
+    //var context = new ValidationContext<LoginRequest>(req);
+    //var resultValidate = new LoginRequestValidator().Validate(context);
+    //if (!ModelState.IsValid)
+    //{
+    //    return Results.BadRequest(resultValidate.Errors);
+    //}
+
+
     var authService = new AuthService();
 
     //Opcion 1: Validar con la regla de negocio directamente en el endpoint
@@ -90,11 +110,11 @@ app.MapPost("/api/auth/token", (LoginRequest req) =>
 
     //Opcion 2: Validar hash+salt
     //Get user from DB (simulated)
-    var userData = GetUserFromDb(username);
+    var userData = GetUserFromDb(req.Username);
 
 
     if (userData is null 
-        || !authService.IsValid(userData, pass)) { 
+        || !authService.IsValid(userData, req.Password)) { 
         return Results.Unauthorized();
     }
 
@@ -127,7 +147,7 @@ app.MapPost("/api/auth/token", (LoginRequest req) =>
 
  User GetUserFromDb(string username)
 {
-    var passOriginal = "123456";
+    var passOriginal = "12345678";
     var salt = Encoding.UTF8.GetBytes("L");
     var passOriginalHash = PasswordSha256.HashPassword(passOriginal, salt);
 
