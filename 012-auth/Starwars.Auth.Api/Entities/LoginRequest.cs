@@ -2,7 +2,8 @@
 
 namespace Starwars.Auth.Api.Entities
 {
-    public record LoginRequest(string? Username, string? Password)
+    public record LoginRequest(string? Username, 
+                               string? Password)
     {
         //[Required]
         //public string Username { get; init; }

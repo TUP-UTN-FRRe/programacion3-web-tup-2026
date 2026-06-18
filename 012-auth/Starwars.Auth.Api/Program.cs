@@ -10,6 +10,7 @@ using Starwars.Auth.Api.Entities;
 var builder = WebApplication.CreateBuilder(args);
 
 
+
 //Config
 var jwtKey    = builder.Configuration["Jwt:Key"]!;
 var jwtIssuer = builder.Configuration["Jwt:Issuer"]!;
@@ -85,6 +86,12 @@ app.MapPost("/api/auth/token", (LoginRequest req) =>
 {
     //var username     = req.Username?.Trim() ?? string.Empty;
     //var pass     = req.Password?.Trim() ?? string.Empty;
+
+    //if (string.IsNullOrEmpty(req.Username) 
+    //|| string.IsNullOrEmpty(req.Password))
+    //{
+    //    return Results.BadRequest("Username and password are required.");
+    //}
 
     //Fluent Validation
     //--------------------------------------------------------------
