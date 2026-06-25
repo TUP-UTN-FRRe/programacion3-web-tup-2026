@@ -37,11 +37,11 @@ builder.Services
 builder.Services.AddAuthorization();
 builder.Services.AddControllers();
 
-//builder.Services.AddTransient<ISaludoModo, SaludoModoModesto>();
-builder.Services.AddTransient<ISaludoModo, SaludoModoMundial>();
-builder.Services.AddTransient<Saludo>();
-//builder.Services.AddScoped<Saludo>();
+builder.Services.AddScoped<ISaludoModo, SaludoModoMundial>();
+builder.Services.AddScoped<Saludo>();
+//builder.Services.AddScoped
 //builder.Services.AddSingleton
+
 
 
 builder.Services.AddCors(o => o.AddDefaultPolicy(p =>

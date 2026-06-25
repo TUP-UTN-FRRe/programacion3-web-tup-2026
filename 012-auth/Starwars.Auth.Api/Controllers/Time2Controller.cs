@@ -26,12 +26,28 @@ public class Time2Controller : ControllerBase
     {
         //var saludo = new Saludo();
 
-        return Ok(new
-        {
-            time    = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
-            secured = false,
-            messsage = _saludo.Saludar()
-        });
+        //Generar random bool
+        Random random = new Random();
+        bool randomBool = random.NextDouble() >= 0.5;
+
+        if (randomBool) {
+            return Ok(new
+            {
+                time = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
+                secured = false,
+                messsage = _saludo.Saludar()
+            });
+        } else {
+            return Ok(
+                new
+                {
+                    hasError = true,
+                    message = "json_invalido",
+                    code = "0067"
+
+                });
+        }
+       
     }
 
     // GET /api/time2/secure — requiere JWT válido

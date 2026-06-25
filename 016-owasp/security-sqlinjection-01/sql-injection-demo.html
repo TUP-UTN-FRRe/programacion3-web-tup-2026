@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demostración de Inyección SQL</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #d32f2f;
+            text-align: center;
+            border-bottom: 3px solid #d32f2f;
+            padding-bottom: 10px;
+        }
+
+        .warning {
+            background-color: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+
+        .input-section {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 5px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .sql-output {
+            background-color: #2d3748;
+            color: #e2e8f0;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            margin: 15px 0;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+
+        .vulnerable {
+            color: #ff6b6b;
+            font-weight: bold;
+        }
+
+        .safe {
+            color: #51cf66;
+            font-weight: bold;
+        }
+
+        .example-payloads {
+            background-color: #ffe6e6;
+            border: 1px solid #ffcccc;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+
+        .payload-button {
+            background-color: #dc3545;
+            margin: 5px;
+            padding: 5px 10px;
+            font-size: 12px;
+        }
+
+        .payload-button:hover {
+            background-color: #c82333;
+        }
+
+        .explanation {
+            background-color: #e7f3ff;
+            border-left: 4px solid #007bff;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .prevention {
+            background-color: #e8f5e8;
+            border-left: 4px solid #28a745;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        code {
+            background-color: #f1f3f4;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚨 Demostración de Inyección SQL</h1>
+        
+        <div class="warning">
+            <strong>⚠️ ADVERTENCIA:</strong> Este es un ejemplo educativo para entender las vulnerabilidades de inyección SQL. 
+            Nunca uses este tipo de código en producción.
+        </div>
+
+        <div class="input-section">
+            <h3>Simulador de Login Vulnerable</h3>
+            <label for="username">Nombre de usuario:</label>
+            <input type="text" id="username" placeholder="Ingresa un nombre de usuario...">
+            
+            <button onclick="simularConsulta()">🔍 Simular Consulta SQL</button>
+            <button onclick="limpiarCampo()">🧹 Limpiar</button>
+        </div>
+
+        <div class="example-payloads">
+            <h4>🎯 Ejemplos de Payloads Maliciosos (pruébalos):</h4>
+            <button class="payload-button" onclick="insertarPayload(`' OR '1'='1`)">Basic SQLi</button>
+            <button class="payload-button" onclick="insertarPayload(`admin'--`)">Comment Attack</button>
+            <button class="payload-button" onclick="insertarPayload(`' OR 1=1--`)">Always True</button>
+            <button class="payload-button" onclick="insertarPayload(`'; DROP TABLE users;--`)">Drop Table</button>
+            <button class="payload-button" onclick="insertarPayload(`' UNION SELECT * FROM passwords--`)">Union Attack</button>
+        </div>
+
+        <div id="resultado"></div>
+
+        <div class="explanation">
+            <h3>🧠 ¿Qué está pasando aquí?</h3>
+            <p><strong>Consulta SQL vulnerable:</strong> El código construye la consulta concatenando directamente el input del usuario:</p>
+            <code>SELECT * FROM users WHERE username = '" + input + "'"</code>
+            
+            <p><strong>El problema:</strong> Si el usuario ingresa caracteres especiales como comillas simples (<code>'</code>), 
+            puede "escapar" del contexto de la cadena y agregar comandos SQL adicionales.</p>
+            
+            <p><strong>Ejemplo de ataque:</strong> Al ingresar <code>' OR '1'='1</code>, la consulta se convierte en:</p>
+            <code>SELECT * FROM users WHERE username = '' OR '1'='1'</code>
+            <p>Como <code>'1'='1'</code> siempre es verdadero, esta consulta retornará todos los usuarios.</p>
+        </div>
+
+        <div class="prevention">
+            <h3>🛡️ Cómo Prevenir Inyección SQL</h3>
+            <ul>
+                <li><strong>Usar consultas preparadas (Prepared Statements):</strong> Separan el código SQL de los datos</li>
+                <li><strong>Validación de entrada:</strong> Verificar que el input cumple con el formato esperado</li>
+                <li><strong>Escape de caracteres especiales:</strong> Neutralizar caracteres que tienen significado especial en SQL</li>
+                <li><strong>Principio de menor privilegio:</strong> La base de datos debe tener solo los permisos mínimos necesarios</li>
+                <li><strong>Usar ORMs:</strong> Los Object-Relational Mappers suelen tener protecciones incorporadas</li>
+            </ul>
+            
+            <h4>Ejemplo de código seguro:</h4>
+            <code>
+                // En lugar de: "SELECT * FROM users WHERE username = '" + input + "'"<br>
+                // Usar: PreparedStatement con parámetros<br>
+                // "SELECT * FROM users WHERE username = ?" con parámetro = input
+            </code>
+        </div>
+    </div>
+
+    <script>
+        // Función que simula la construcción vulnerable de una consulta SQL
+        function simularConsulta() {
+            const username = document.getElementById('username').value;
+            const resultadoDiv = document.getElementById('resultado');
+            
+            // Esta es la forma VULNERABLE de construir una consulta SQL
+            // ¡NUNCA hagas esto en código real!
+            const consultaVulnerable = `SELECT * FROM users WHERE username = '${username}'`;
+            
+            // Análisis de la consulta para detectar posibles inyecciones
+            let esVulnerable = false;
+            let explicacion = '';
+            
+            if (username.includes("'")) {
+                esVulnerable = true;
+                explicacion = "⚠️ Se detectaron comillas simples que pueden alterar la consulta SQL.";
+            }
+            
+            if (username.toLowerCase().includes('or')) {
+                esVulnerable = true;
+                explicacion += " Se detectó la palabra 'OR' que puede crear condiciones siempre verdaderas.";
+            }
+            
+            if (username.includes('--')) {
+                esVulnerable = true;
+                explicacion += " Se detectaron comentarios SQL (--) que pueden ignorar el resto de la consulta.";
+            }
+            
+            if (username.toLowerCase().includes('drop') || username.toLowerCase().includes('delete') || username.toLowerCase().includes('insert')) {
+                esVulnerable = true;
+                explicacion += " Se detectaron comandos SQL peligrosos (DROP, DELETE, INSERT).";
+            }
+            
+            if (username.toLowerCase().includes('union')) {
+                esVulnerable = true;
+                explicacion += " Se detectó UNION que puede combinar resultados de otras tablas.";
+            }
+            
+            // Mostrar resultado
+            resultadoDiv.innerHTML = `
+                <h3>📊 Resultado de la Simulación</h3>
+                <div class="sql-output">
+                    <strong>Consulta SQL generada:</strong>
+                    ${consultaVulnerable}
+                </div>
+                
+                <div class="${esVulnerable ? 'vulnerable' : 'safe'}">
+                    <strong>Estado de seguridad:</strong> ${esVulnerable ? '🚨 VULNERABLE' : '✅ APARENTEMENTE SEGURO'}
+                </div>
+                
+                ${esVulnerable ? `
+                    <div class="warning">
+                        <strong>Análisis de la amenaza:</strong><br>
+                        ${explicacion}
+                        <br><br>
+                        <strong>Posible impacto:</strong> Un atacante podría:
+                        <ul>
+                            <li>Acceder a datos de otros usuarios</li>
+                            <li>Modificar o eliminar información</li>
+                            <li>Ejecutar comandos administrativos</li>
+                            <li>Comprometer toda la base de datos</li>
+                        </ul>
+                    </div>
+                ` : ''}
+                
+                <div class="explanation">
+                    <strong>💡 Explicación técnica:</strong><br>
+                    ${username === '' ? 
+                        'Consulta básica sin input del usuario.' : 
+                        esVulnerable ? 
+                            'El input del usuario ha alterado la estructura de la consulta SQL original, permitiendo la ejecución de código no autorizado.' :
+                            'El input parece seguro, pero recuerda que en un entorno real siempre debes usar consultas preparadas.'
+                    }
+                </div>
+            `;
+        }
+        
+        // Función para insertar payloads de ejemplo
+        function insertarPayload(payload) {
+            document.getElementById('username').value = payload;
+            simularConsulta();
+        }
+        
+        // Función para limpiar el campo
+        function limpiarCampo() {
+            document.getElementById('username').value = '';
+            document.getElementById('resultado').innerHTML = '';
+        }
+        
+        // Simular consulta inicial vacía
+        simularConsulta();
+    </script>
+</body>
+</html>

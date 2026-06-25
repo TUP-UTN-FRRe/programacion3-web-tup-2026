@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Versión Segura - Sin Vulnerabilidad XSS</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .form-group {
+            margin: 20px 0;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .output {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            border-radius: 5px;
+            min-height: 50px;
+        }
+        .security-info {
+            background-color: #d1ecf1;
+            border: 1px solid #bee5eb;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        .security-info h3 {
+            color: #0c5460;
+            margin-top: 0;
+        }
+        .code-example {
+            background-color: #f8f9fa;
+            border-left: 4px solid #28a745;
+            padding: 10px;
+            margin: 10px 0;
+            font-family: monospace;
+            white-space: pre-wrap;
+        }
+        .success {
+            color: #28a745;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>✅ Versión Segura - Sin Vulnerabilidad XSS</h1>
+        
+        <div class="form-group">
+            <label for="userName">Ingresa tu nombre:</label>
+            <input type="text" id="userName" placeholder="Ej: Juan Pérez">
+            <button onclick="mostrarSaludoSeguro()">Saludar</button>
+        </div>
+
+        <!-- ÁREA SEGURA: Aquí se mostrará el contenido sanitizado -->
+        <div class="output" id="saludoOutput">
+            <em>Tu saludo aparecerá aquí de forma segura...</em>
+        </div>
+
+        <div class="security-info">
+            <h3>🔒 Medidas de Seguridad Implementadas</h3>
+            <p><strong>Métodos utilizados:</strong></p>
+            <ul>
+                <li><strong>textContent:</strong> Se usa en lugar de innerHTML para prevenir la ejecución de código</li>
+                <li><strong>Validación de entrada:</strong> Se verifica que el input no esté vacío</li>
+                <li><strong>Escape de caracteres:</strong> Los caracteres especiales se tratan como texto plano</li>
+            </ul>
+            
+            <h4>🛡️ Código seguro utilizado:</h4>
+            <div class="code-example">// En lugar de innerHTML (vulnerable):
+outputDiv.innerHTML = `&lt;h2&gt;¡Hola, ${nombreUsuario}!&lt;/h2&gt;`;
+
+// Se usa textContent (seguro):
+outputDiv.textContent = `¡Hola, ${nombreUsuario}! Bienvenido/a.`;</div>
+            
+            <p class="success">✅ Con estas medidas, los intentos de XSS se muestran como texto plano sin ejecutarse.</p>
+        </div>
+    </div>
+
+    <script>
+        // FUNCIÓN SEGURA - Recomendada para producción
+        function mostrarSaludoSeguro() {
+            // Paso 1: Obtener el valor del input del usuario
+            const nombreUsuario = document.getElementById('userName').value;
+            
+            // Paso 2: Validar la entrada
+            if (!nombreUsuario.trim()) {
+                alert('Por favor, ingresa tu nombre.');
+                return;
+            }
+            
+            // Paso 3: SEGURIDAD - Usar textContent en lugar de innerHTML
+            const outputDiv = document.getElementById('saludoOutput');
+            
+            // textContent trata todo como texto plano, no como HTML
+            // Esto previene la ejecución de cualquier código malicioso
+            outputDiv.textContent = `¡Hola, ${nombreUsuario}! Bienvenido/a a nuestra página segura.`;
+            
+            // Si necesitas crear elementos HTML de forma segura:
+            crearElementosHTMLSeguro(nombreUsuario);
+        }
+
+        // Función que demuestra cómo crear HTML de forma segura
+        function crearElementosHTMLSeguro(nombre) {
+            // Crear elementos DOM de forma programática es más seguro
+            const contenedor = document.createElement('div');
+            contenedor.style.marginTop = '10px';
+            contenedor.style.padding = '10px';
+            contenedor.style.backgroundColor = '#e8f5e8';
+            contenedor.style.borderRadius = '5px';
+            
+            const titulo = document.createElement('h3');
+            titulo.textContent = `Saludo personalizado para ${nombre}`;
+            titulo.style.color = '#28a745';
+            titulo.style.margin = '0 0 10px 0';
+            
+            const mensaje = document.createElement('p');
+            mensaje.textContent = `Este mensaje fue creado de forma segura para ${nombre}.`;
+            mensaje.style.margin = '0';
+            
+            // Limpiar contenido anterior y agregar nuevos elementos
+            const outputDiv = document.getElementById('saludoOutput');
+            outputDiv.innerHTML = ''; // Safe to clear
+            outputDiv.appendChild(contenedor);
+            contenedor.appendChild(titulo);
+            contenedor.appendChild(mensaje);
+        }
+
+        // Función para sanitizar entradas (ejemplo básico)
+        function sanitizarEntrada(input) {
+            // Método básico de sanitización
+            return input
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#x27;')
+                .replace(/\//g, '&#x2F;');
+        }
+
+        // Función alternativa usando sanitización manual
+        function mostrarSaludoConSanitizacion() {
+            const nombreUsuario = document.getElementById('userName').value;
+            
+            if (!nombreUsuario.trim()) {
+                alert('Por favor, ingresa tu nombre.');
+                return;
+            }
+            
+            // Sanitizar la entrada antes de mostrarla
+            const nombreSanitizado = sanitizarEntrada(nombreUsuario);
+            
+            const outputDiv = document.getElementById('saludoOutput');
+            // Ahora es seguro usar innerHTML con contenido sanitizado
+            outputDiv.innerHTML = `<h3 style="color: #28a745;">¡Hola, ${nombreSanitizado}!</h3>
+                                  <p>Tu entrada fue sanitizada antes de mostrarse.</p>`;
+        }
+
+        // Configurar eventos al cargar la página
+        window.onload = function() {
+            // Agregar listener para Enter en el input
+            document.getElementById('userName').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    mostrarSaludoSeguro();
+                }
+            });
+        };
+    </script>
+</body>
+</html>

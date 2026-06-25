@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejemplo de Vulnerabilidad XSS Reflejada</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .form-group {
+            margin: 20px 0;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .output {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e9ecef;
+            border-radius: 5px;
+            min-height: 50px;
+        }
+        .vulnerability-info {
+            background-color: #fff3cd;
+            border: 1px solid #ffeaa7;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        .vulnerability-info h3 {
+            color: #856404;
+            margin-top: 0;
+        }
+        .payload-example {
+            background-color: #f8f9fa;
+            border-left: 4px solid #dc3545;
+            padding: 10px;
+            margin: 10px 0;
+            font-family: monospace;
+            word-break: break-all;
+        }
+        .warning {
+            color: #dc3545;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚨 Ejemplo de Vulnerabilidad XSS Reflejada</h1>
+        
+        <div class="form-group">
+            <label for="userName">Ingresa tu nombre:</label>
+            <input type="text" id="userName" placeholder="Ej: Juan Pérez">
+            <button onclick="mostrarSaludo()">Saludar</button>
+        </div>
+
+        <!-- ÁREA VULNERABLE: Aquí se mostrará el contenido sin sanitizar -->
+        <div class="output" id="saludoOutput">
+            <em>Tu saludo aparecerá aquí...</em>
+        </div>
+
+        <div class="vulnerability-info">
+            <h3>📍 Información sobre la Vulnerabilidad</h3>
+            <p><strong>Tipo:</strong> XSS Reflejada (Reflected XSS)</p>
+            <p><strong>Ubicación de la vulnerabilidad:</strong> La función <code>mostrarSaludo()</code> toma el valor del input directamente y lo inserta en el DOM usando <code>innerHTML</code> sin ningún tipo de sanitización.</p>
+            
+            <h4>🎯 Payloads XSS que funcionarían:</h4>
+            <div class="payload-example">
+                &lt;script&gt;alert('XSS!')&lt;/script&gt;
+            </div>
+            <div class="payload-example">
+                &lt;img src="x" onerror="alert('XSS con imagen!')"&gt;
+            </div>
+            <div class="payload-example">
+                &lt;svg onload="alert('XSS con SVG!')"&gt;&lt;/svg&gt;
+            </div>
+            <div class="payload-example">
+                &lt;iframe src="https://google.com" style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:9999;border:none;"&gt;&lt;/iframe&gt;
+            </div>
+            
+            <h4>⚠️ Payload especial - Iframe a pantalla completa:</h4>
+            <p><strong>El último ejemplo es particularmente peligroso porque:</strong></p>
+            <ul>
+                <li>Inserta un iframe que ocupa toda la pantalla</li>
+                <li>Se posiciona por encima de todo el contenido (z-index alto)</li>
+                <li>Puede cargar cualquier sitio web dentro del iframe</li>
+                <li>Simula que el usuario está en Google cuando en realidad sigue en la página vulnerable</li>
+                <li>Podría usarse para phishing o captura de credenciales</li>
+            </ul>
+            
+            <p class="warning">⚠️ ADVERTENCIA: Este código es intencionalmente vulnerable. NO uses este patrón en aplicaciones reales.</p>
+        </div>
+    </div>
+
+    <script>
+        // FUNCIÓN VULNERABLE - NO USAR EN PRODUCCIÓN
+        function mostrarSaludo() {
+            // Paso 1: Obtener el valor del input del usuario
+            const nombreUsuario = document.getElementById('userName').value;
+            
+            // Paso 2: VULNERABILIDAD AQUÍ - Se inserta directamente en el DOM
+            // sin ningún tipo de validación o sanitización
+            const outputDiv = document.getElementById('saludoOutput');
+            
+            // PROBLEMA: innerHTML permite la ejecución de código HTML/JavaScript
+            // Si el usuario ingresa código malicioso, se ejecutará inmediatamente
+            outputDiv.innerHTML = `<h2>¡Hola, ${nombreUsuario}!</h2>
+                                  <p>Bienvenido/a a nuestra página.</p>`;
+            
+            // Lo que DEBERÍA hacerse para prevenir XSS:
+            // outputDiv.textContent = `¡Hola, ${nombreUsuario}! Bienvenido/a a nuestra página.`;
+            // o usar una librería de sanitización como DOMPurify
+        }
+
+        // Función adicional para demostrar más vulnerabilidades
+        function procesarParametrosURL() {
+            // Esta función también sería vulnerable si procesara parámetros de URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const nombreFromURL = urlParams.get('nombre');
+            
+            if (nombreFromURL) {
+                // Esto también sería vulnerable:
+                // document.getElementById('saludoOutput').innerHTML = 
+                //     `<p>Nombre desde URL: ${nombreFromURL}</p>`;
+                
+                console.log('Parámetro nombre encontrado en URL:', nombreFromURL);
+            }
+        }
+
+        // Ejecutar al cargar la página
+        window.onload = function() {
+            procesarParametrosURL();
+            
+            // Agregar listener para Enter en el input
+            document.getElementById('userName').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    mostrarSaludo();
+                }
+            });
+        };
+    </script>
+</body>
+</html>
